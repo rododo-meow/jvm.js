@@ -14,7 +14,7 @@
     "compile": "./node_modules/.bin/babel -d lib/ src/",
     "docs": "./node_modules/.bin/esdoc -c .esdoc.json",
     "lint": "eslint src",
-    "prepublish": "npm run compile",
+    "preinstall": "npm install && npm run compile",
     "test": "./node_modules/.bin/eslint src"
   },
   "dependencies": {
