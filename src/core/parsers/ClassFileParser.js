@@ -18,7 +18,7 @@ export const ClassFileParser =
     .uint16('constant_pool_count')
     .array('constant_pool', {
         type: ConstantPoolInfo,
-        length: function () {
+        readUntil: function () {
           let lastIdx = this.constant_pool.length - 1;
           let lastEntry = this.constant_pool[lastIdx];
 
@@ -41,13 +41,12 @@ export const ClassFileParser =
           //
           // More details here: https://github.com/keichi/binary-parser/issues/20
           if (lastEntry && (lastEntry.tag === 6 || lastEntry.tag === 5)) {
-            this.constant_pool_count -= 1;
             this.constant_pool.push(false);
           }
 
           // This is standard and is the proper behavior for indexing of the constant pool,
           // though, no other tables in the JVM class file spec do this.
-          return this.constant_pool_count - 1;
+          return this.constant_pool.length == this.constant_pool_count - 1;
         }
     })
     .uint16('access_flags')
